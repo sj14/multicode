@@ -26,6 +26,12 @@ func TestDecode(t *testing.T) {
 			decoded:     "This is a hex test",
 		},
 		{
+			description: "0x hex",
+			encoded:     []byte("0x" + hex.EncodeToString([]byte("This is a hex test"))),
+			applied:     1,
+			decoded:     "This is a hex test",
+		},
+		{
 			description: "proto/hex",
 			encoded:     []byte("0a03617364102a20042a200a1468747470733a2f2f657861206d706c652e636f6d1208657861206d706c653a00"),
 			applied:     2,
