@@ -38,7 +38,7 @@ func decode(input []byte) (string, int) {
 	appliedCount := 0
 
 	for {
-		applied := false
+		appliedTmp := appliedCount
 		if err := proto.Unmarshal(input, unmarshalled); err == nil {
 			// TODO: remove control characters (unfortunately, they are all valid strings here)
 			input = []byte(unmarshalled.String())
@@ -48,21 +48,23 @@ func decode(input []byte) (string, int) {
 			return unmarshalled.String(), appliedCount
 		}
 
-		if b, err := base64.StdEncoding.DecodeString(string(input)); err == nil {
-			input = b
-			logVerbose("applied base64 decoding:\n%v\n\n", string(b))
-			appliedCount++
-			applied = true
-		}
-
 		if b, err := hex.DecodeString(strings.TrimSpace(strings.TrimPrefix(string(input), "0x"))); err == nil {
 			input = b
 			logVerbose("applied hex decoding:\n%v\n\n", string(b))
 			appliedCount++
-			applied = true
 		}
 
-		if !applied {
+		// TODO: many false-positives. Decodes it when no base64 was given.
+		// Keep it as one of the last decodings. Maybe even 'continue' on the
+		// applied decoding before, so e.g. nested hex encodings won't reach here this early.
+		if b, err := base64.StdEncoding.DecodeString(string(input)); err == nil {
+			input = b
+			logVerbose("applied base64 decoding:\n%v\n\n", string(b))
+			appliedCount++
+		}
+
+		// Nothing applied, don't iterate again.
+		if appliedTmp == appliedCount {
 			return string(input), appliedCount
 		}
 	}
