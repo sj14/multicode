@@ -9,12 +9,17 @@ import (
 	"github.com/sj14/multicode/protodec"
 )
 
+// Encryption applied in the decoding.
 type Encryption int
 
 const (
+	// None decryption applied.
 	None = iota
+	// Proto decryption applied.
 	Proto
+	// Hex decryption applied.
 	Hex
+	// Base64 decryption applied.
 	Base64
 )
 
@@ -24,7 +29,6 @@ func Decode(input []byte) ([]byte, Encryption) {
 
 	if err := proto.Unmarshal(input, unmarshalled); err == nil {
 		// TODO: remove control characters (unfortunately, they are all valid strings here)
-		input = []byte(unmarshalled.String())
 		return []byte(unmarshalled.String()), Proto
 	}
 
