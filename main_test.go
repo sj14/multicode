@@ -14,6 +14,12 @@ func TestDecode(t *testing.T) {
 		decoded     string
 	}{
 		{
+			description: "no encoding",
+			encoded:     []byte("no encoding"),
+			applied:     0,
+			decoded:     "no encoding",
+		},
+		{
 			description: "base64",
 			encoded:     []byte(base64.StdEncoding.EncodeToString([]byte("This is a base64 test"))),
 			applied:     1,
@@ -46,7 +52,7 @@ func TestDecode(t *testing.T) {
 				t.Fatalf("expeced %v decodings, got %v", tt.applied, n)
 			}
 			if decoded != tt.decoded {
-				t.Fatalf("expeced '%v', got '%v'", tt.decoded, decoded)
+				t.Fatalf("expected '%v', got '%v'", tt.decoded, decoded)
 			}
 		})
 	}
