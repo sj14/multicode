@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package protodec;
+import "google/protobuf/any.proto";
+
+message Empty {
+}
+
+message SimpleMessage {
+    string text = 1;
+}
+
+message ComplexMessage {
+  string query = 1;
+  int32 page_number = 2;
+  int32 result_per_page = 3;
+  enum Corpus {
+    UNIVERSAL = 0;
+    WEB = 1;
+    IMAGES = 2;
+    LOCAL = 3;
+    NEWS = 4;
+    PRODUCTS = 5;
+    VIDEO = 6;
+  }
+  Corpus corpus = 4;
+  repeated Result results = 5;
+  repeated google.protobuf.Any details = 6;
+  SampleMessage sample = 7; 
+  map<string, Result> projects = 8;
+}
+
+message SampleMessage {
+  oneof test_oneof {
+    string name = 4;
+    Outer sub_message = 9;
+  }
+}
+
+
+message Result {
+  string url = 1;
+  string title = 2;
+  repeated string snippets = 3;
+}
+
+message Outer {                  // Level 0
+  message MiddleAA {  // Level 1
+    message Inner {   // Level 2
+      int64 ival = 1;
+      bool  booly = 2;
+    }
+  }
+  message MiddleBB {  // Level 1
+    message Inner {   // Level 2
+      int32 ival = 1;
+      bool  booly = 2;
+    }
+  }
+}
