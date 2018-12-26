@@ -11,7 +11,7 @@ import (
 	"strings"
 
 	"github.com/golang/protobuf/proto"
-	"github.com/sj14/multidecode/protodec"
+	"github.com/sj14/multicode/protodec"
 )
 
 var (
@@ -27,7 +27,11 @@ func main() {
 	if err != nil {
 		log.Fatalln("failed to read input")
 	}
-	result, _ := decode(input)
+	result, i := decode(input)
+	if i == 0 {
+		fmt.Println("failed to decode")
+		os.Exit(1)
+	}
 
 	logVerbose("result:\n")
 	fmt.Printf("%v\n", string(result))
@@ -57,7 +61,7 @@ func decode(input []byte) (string, int) {
 		// TODO: many false-positives. Decodes it when no base64 was given.
 		// Keep it as one of the last decodings. Maybe even 'continue' on the
 		// applied decoding before, so e.g. nested hex encodings won't reach here this early.
-		if b, err := base64.StdEncoding.DecodeString(string(input)); err == nil {
+		if b, err := base64.StdEncoding.DecodeString(strings.TrimSpace(string(input))); err == nil {
 			input = b
 			logVerbose("applied base64 decoding:\n%v\n\n", string(b))
 			appliedCount++
