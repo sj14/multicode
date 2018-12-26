@@ -48,6 +48,7 @@ func decode(input []byte) (string, int) {
 			return unmarshalled.String(), appliedCount
 		}
 
+		// TODO: need to fix this
 		if b, err := base64.StdEncoding.DecodeString(string(input)); err == nil {
 			input = b
 			logVerbose("applied base64 decoding:\n%v\n\n", string(b))
