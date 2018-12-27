@@ -65,11 +65,12 @@ func TestDecode(t *testing.T) {
 	for _, tt := range testCases {
 		t.Run(tt.description, func(t *testing.T) {
 			// initial decoding
-			decoded, enc := Decode(tt.given)
+			decoder := New()
+			decoded, enc := decoder.Decode(tt.given)
 
 			// apply as many decodings as specified
 			for i := 1; i < tt.decodings; i++ {
-				decoded, enc = Decode(decoded)
+				decoded, enc = decoder.Decode(decoded)
 			}
 
 			// assert results
