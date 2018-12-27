@@ -21,9 +21,9 @@ var (
 
 func main() {
 	// init flags
-	flag.BoolVar(&hex, "hex", false, "use hex decoding")
-	flag.BoolVar(&base64, "base64", false, "use base64 decoding")
-	flag.BoolVar(&proto, "proto", false, "use proto decoding")
+	flag.BoolVar(&hex, "hex", true, "use hex decoding")
+	flag.BoolVar(&base64, "base64", true, "use base64 decoding")
+	flag.BoolVar(&proto, "proto", true, "use proto decoding")
 	flag.BoolVar(&none, "none", false, "disable all decodings")
 	flag.BoolVar(&verbose, "v", false, "verbose ouput mode")
 	flag.Parse()
