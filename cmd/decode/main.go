@@ -3,12 +3,12 @@ package main
 import (
 	"bufio"
 	"bytes"
+	"flag"
 	"fmt"
 	"log"
 	"os"
 
 	"github.com/sj14/multicode/decode"
-	"github.com/spf13/pflag"
 )
 
 var (
@@ -21,12 +21,12 @@ var (
 
 func main() {
 	// init flags
-	pflag.BoolVar(&hex, "hex", false, "use hex decoding")
-	pflag.BoolVar(&base64, "base64", false, "use base64 decoding")
-	pflag.BoolVar(&proto, "proto", false, "use proto decoding")
-	pflag.BoolVar(&none, "none", false, "disable all decodings")
-	pflag.BoolVarP(&verbose, "verbose", "v", false, "verbose ouput mode")
-	pflag.Parse()
+	flag.BoolVar(&hex, "hex", false, "use hex decoding")
+	flag.BoolVar(&base64, "base64", false, "use base64 decoding")
+	flag.BoolVar(&proto, "proto", false, "use proto decoding")
+	flag.BoolVar(&none, "none", false, "disable all decodings")
+	flag.BoolVar(&verbose, "v", false, "verbose ouput mode")
+	flag.Parse()
 
 	// read program input
 	reader := bufio.NewReader(os.Stdin)
@@ -36,7 +36,7 @@ func main() {
 	}
 
 	// Default decoder enables all decodings.
-	// Disable all and only enable specified
+	// Disable all and only enable specified ones.
 	// Flags are set to true by default.
 	var opts []decode.Option
 	opts = append(opts, decode.WithoutAll())
@@ -59,7 +59,7 @@ func main() {
 		enc     decode.Encryption
 	)
 	for result, enc = decoder.Decode(result); enc != decode.None; result, enc = decoder.Decode(result) {
-		logVerbose("applied decoding '%v':\n%s\n\n", enc, result)
+		logVerbose("- applied decoding '%v':\n%s\n\n", enc, result)
 	}
 
 	// check if any kind of decryption was applied
@@ -68,7 +68,7 @@ func main() {
 	}
 
 	// output result
-	logVerbose("result:\n")
+	logVerbose("- result:\n")
 	fmt.Printf("%v\n", string(result))
 }
 

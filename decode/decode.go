@@ -23,6 +23,7 @@ const (
 	Base64 = "base64"
 )
 
+// Decoder implementation.
 type Decoder struct {
 	proto  bool
 	hex    bool
@@ -46,14 +47,6 @@ func WithoutAll() Option {
 		d.base64 = false
 	}
 }
-
-// func WithAll() Option {
-// 	return func(d *Decoder) {
-// 		d.proto = true
-// 		d.hex = true
-// 		d.base64 = true
-// 	}
-// }
 
 // WithHex decoding.
 func WithHex() Option {
@@ -82,7 +75,6 @@ func New(opts ...Option) Decoder {
 	for _, o := range opts {
 		o(&d)
 	}
-
 	return d
 }
 
