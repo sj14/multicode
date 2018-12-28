@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/sj14/multicode/decode"
 )
@@ -28,11 +29,25 @@ func main() {
 	flag.BoolVar(&verbose, "v", false, "verbose ouput mode")
 	flag.Parse()
 
+	var input []byte
+
 	// read program input
-	reader := bufio.NewReader(os.Stdin)
-	input, err := reader.ReadBytes('\n')
-	if err != nil {
-		log.Fatalln("failed to read input")
+	if flag.NArg() == 0 { // from pipe
+		reader := bufio.NewReader(os.Stdin)
+		var err error
+		input, err = reader.ReadBytes('\n')
+		if err != nil {
+			log.Fatalln("failed to read input")
+		}
+	} else { // from argument
+		if flag.NArg() > 1 {
+			log.Fatalln("takes at most one input")
+		}
+		input = []byte(flag.Arg(0))
+	}
+	// can't trim spaces in general, this would mess up proto decoding!
+	if strings.TrimSpace(string(input)) == "" {
+		log.Fatalln("empty input")
 	}
 
 	// Default decoder enables all decodings.
