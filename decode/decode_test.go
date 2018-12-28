@@ -52,6 +52,15 @@ func TestDecode(t *testing.T) {
 			},
 		},
 		{
+			description: "hex/base64",
+			given:       []byte("Njg2NTZDNkM2RjIwNzQ2ODY1NzI2NQ=="),
+			decodings:   2,
+			expect: expect{
+				encryption: Hex,
+				output:     []byte("hello there"),
+			},
+		},
+		{
 			description: "proto/hex",
 			given:       []byte("0a03617364102a20042a200a1468747470733a2f2f657861206d706c652e636f6d1208657861206d706c653a00"),
 			decodings:   2,
