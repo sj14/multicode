@@ -2,32 +2,38 @@
 
 `multicode` allows to input a (nested) `base64`, `hex` or `proto` (protocol buffers) decoded sequence and will recursively try to encode it. This is helpful when you get encoded data but don't exactly know how it was encoded or encoding might lead to cumbersome command concatenation.
 
+## Install
+
+``` text
+go get -u github.com/sj14/multicode/cmd/decode
+``` 
+
 ## Examples
 
 First, let's encode a string with hex and base64 encoding:
 
-```text
+``` text
 $ echo hello there | xxd -p | base64
 Njg2NTZjNmM2ZjIwNzQ2ODY1NzI2NTBhCg==
 ```
 
 Decode:
 
-```text
+``` text
 $ decode Njg2NTZjNmM2ZjIwNzQ2ODY1NzI2NTBhCg==
 hello there
 ```
 
 Decode using the pipe:
 
-```text
+``` text
 $ echo Njg2NTZjNmM2ZjIwNzQ2ODY1NzI2NTBhCg== | decode
 hello there
 ```
 
 Decode in verbose mode:
 
-```text
+``` text
 $ decode -v Njg2NTZjNmM2ZjIwNzQ2ODY1NzI2NTBhCg==
 - applied decoding 'base64':
 68656C6C6F207468657265
@@ -41,7 +47,7 @@ hello there
 
 Disable hex decoding:
 
-```text
+``` text
 $ decode -v -hex=false Njg2NTZjNmM2ZjIwNzQ2ODY1NzI2NTBhCg==
 - applied decoding 'base64':
 68656C6C6F207468657265
