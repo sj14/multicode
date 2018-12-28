@@ -1,10 +1,10 @@
 # multicode
 
-`multicode` allows to input a (nested) `base64`, `hex` or `proto` decoded sequence and will recursively try to encode it. This is helpful when you get encoded data but don't exactly know how it was encoded.
+`multicode` allows to input a (nested) `base64`, `hex` or `proto` (protocol buffers) decoded sequence and will recursively try to encode it. This is helpful when you get encoded data but don't exactly know how it was encoded or encoding might lead to cumbersome command concatenation.
 
 ## Examples
 
-First, let's encode a string string with hex and base64:
+First, let's encode a string with hex and base64 encoding:
 
 ```text
 $ echo hello there | xxd -p | base64
@@ -21,7 +21,7 @@ hello there
 Decode using the pipe:
 
 ```text
-echo Njg2NTZjNmM2ZjIwNzQ2ODY1NzI2NTBhCg== | decode
+$ echo Njg2NTZjNmM2ZjIwNzQ2ODY1NzI2NTBhCg== | decode
 hello there
 ```
 
