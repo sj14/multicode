@@ -32,7 +32,7 @@ func main() {
 	var input []byte
 
 	// read program input
-	if flag.NArg() == 0 { // from pipe
+	if flag.NArg() == 0 { // from stdin (also pipe)
 		reader := bufio.NewReader(os.Stdin)
 		var err error
 		input, err = reader.ReadBytes('\n')
@@ -78,7 +78,7 @@ func main() {
 	}
 
 	// check if any kind of decryption was applied
-	if bytes.Compare(input, result) == 0 {
+	if bytes.Equal(input, result) {
 		log.Fatalln("failed to decode")
 	}
 
