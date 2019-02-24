@@ -98,6 +98,10 @@ func DecodeAll(input []byte, opts ...Option) []byte {
 
 // Decode the given input as proto message, hex or base64 (applied in this order).
 func (d *Decoder) Decode(input []byte) ([]byte, Encryption) {
+	if len(input) == 0 {
+		return []byte{}, None
+	}
+
 	unmarshalled := &protodec.Empty{}
 
 	if d.proto {
