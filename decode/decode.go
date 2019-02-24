@@ -78,6 +78,24 @@ func New(opts ...Option) Decoder {
 	return d
 }
 
+// DecodeAll decodes the given input recursively as long as a decoding was applied.
+func DecodeAll(input []byte, opts ...Option) []byte {
+	if len(input) == 0 {
+		return []byte{}
+	}
+
+	var (
+		decoder = New(opts...)
+		result  = input
+		enc     Encryption
+	)
+
+	for result, enc = decoder.Decode(result); enc != None; result, enc = decoder.Decode(result) {
+		// continue decoding as long a a decoder was applied (not 'None')
+	}
+	return result
+}
+
 // Decode the given input as proto message, hex or base64 (applied in this order).
 func (d *Decoder) Decode(input []byte) ([]byte, Encryption) {
 	unmarshalled := &protodec.Empty{}
