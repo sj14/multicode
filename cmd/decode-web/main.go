@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -26,7 +25,6 @@ func handleDecode(w http.ResponseWriter, r *http.Request) {
 
 	input := r.FormValue("input")
 	input = strings.TrimSpace(input)
-	fmt.Println(input)
 
 	var (
 		decoder    = decode.New()
@@ -42,7 +40,6 @@ func handleDecode(w http.ResponseWriter, r *http.Request) {
 		result = []byte("Failed to decode!")
 	}
 
-	fmt.Println(appliedEnc)
 	data := struct {
 		Input       string
 		Decoded     string
