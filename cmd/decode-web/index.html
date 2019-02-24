@@ -8,19 +8,40 @@
 
 <body>
     <form action="/">
-        <textarea rows="4" cols="50" name="input" placeholder="Your encoded input." required>{{.Input}}</textarea>
+        <textarea rows="10" cols="100" name="input" placeholder="Your encoded input." required>{{.Input}}</textarea>
+        <br>
         <input type="submit">
     </form>
 
-    <textarea rows="4" cols="50" placeholder="The decoded result will be shown here." disabled>{{.Decoded}}</textarea>
+
+    <br>
+    <textarea rows="10" cols="100" placeholder="The decoded result will be shown here." disabled>{{.Decoded}}</textarea>
+
+    <br>
+    {{if .Encryptions}}
+    Applied Decodings:
+    <ol>
+        {{range .Encryptions}}
+        <li> {{.}} </li>
+        {{end}}
+    </ol>
+
+    {{end}}
+
+    <br>
+    Examples:
+    <ol>
+        <li> <a
+                href="/?input=54686520717569636b2062726f776e20f09fa68a206a756d7073206f766572203133206c617a7920f09f90b62e">Hex</a>
+        </li>
+        <li> <a href="/?input=VGhlIHF1aWNrIGJyb3duIPCfpooganVtcHMgb3ZlciAxMyBsYXp5IPCfkLYu">Base64</a></li>
+        <li> <a
+                href="/?input=NTQ2ODY1MjA3MTc1Njk2MzZiMjA2MjcyNmY3NzZlMjBmMDlmYTY4YTIwNmE3NTZkNzA3MzIwNmY3NjY1NzIyMDMxMzMyMDZjNjE3YTc5MjBmMDlmOTBiNjJl">Base64
+                and Hex</a></li>
+        <li> <a
+                href="/?input=0a03617364102a20042a200a1468747470733a2f2f657861206d706c652e636f6d1208657861206d706c653a00">Proto</a>
+        </li>
+    </ol>
 </body>
-
-Examples:
-
-<a href="/?input=54686520717569636b2062726f776e20f09fa68a206a756d7073206f766572203133206c617a7920f09f90b62e">Hex</a>
-<a href="/?input=VGhlIHF1aWNrIGJyb3duIPCfpooganVtcHMgb3ZlciAxMyBsYXp5IPCfkLYu">Base64</a>
-<a
-    href="/?input=NTQ2ODY1MjA3MTc1Njk2MzZiMjA2MjcyNmY3NzZlMjBmMDlmYTY4YTIwNmE3NTZkNzA3MzIwNmY3NjY1NzIyMDMxMzMyMDZjNjE3YTc5MjBmMDlmOTBiNjJl">Hex
-    and Base64</a>
 
 </html>

@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -25,19 +26,31 @@ func handleDecode(w http.ResponseWriter, r *http.Request) {
 
 	input := r.FormValue("input")
 	input = strings.TrimSpace(input)
+	fmt.Println(input)
 
-	result := decode.DecodeAll([]byte(input))
-
-	if input != "" && bytes.Equal([]byte(input), result) {
-		result = []byte("failed to decode")
+	var (
+		decoder    = decode.New()
+		result     = []byte(input)
+		enc        decode.Encryption
+		appliedEnc []decode.Encryption
+	)
+	for result, enc = decoder.Decode(result); enc != decode.None; result, enc = decoder.Decode(result) {
+		appliedEnc = append(appliedEnc, enc)
 	}
 
+	if input != "" && bytes.Equal([]byte(input), result) {
+		result = []byte("Failed to decode!")
+	}
+
+	fmt.Println(appliedEnc)
 	data := struct {
-		Input   string
-		Decoded string
+		Input       string
+		Decoded     string
+		Encryptions []decode.Encryption
 	}{
-		Input:   input,
-		Decoded: string(result),
+		Input:       input,
+		Decoded:     string(result),
+		Encryptions: appliedEnc,
 	}
 	if err := t.Execute(w, data); err != nil {
 		log.Printf("failed to execute template: %v", err)
