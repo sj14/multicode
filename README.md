@@ -6,7 +6,21 @@
 
 ``` text
 go get -u github.com/sj14/multicode/cmd/decode
-``` 
+```
+
+## Usage
+
+``` text
+  -base64
+        use base64 decoding (default true)
+  -hex
+        use hex decoding (default true)
+  -none
+        disable all decodings
+  -proto
+        use proto decoding (default true)
+  -v    verbose ouput mode
+```
 
 ## Examples
 
@@ -56,16 +70,38 @@ $ decode -v -hex=false Njg2NTZjNmM2ZjIwNzQ2ODY1NzI2NTBhCg==
 68656C6C6F207468657265
 ```
 
-## Usage
+## Protobuf
 
-``` text
-  -base64
-        use base64 decoding (default true)
-  -hex
-        use hex decoding (default true)
-  -none
-        disable all decodings
-  -proto
-        use proto decoding (default true)
-  -v    verbose ouput mode
+We can decode protocol buffer encodings without specifying a proto file. Based on the missing definition file, it's unfortunately not possible, to output the field names. Field names will be replaced by the field id.
+
+Let's assume the following proto message:
+
+```text
+message Message {
+  string query = 1;
+  int32 page_number = 2;
+  int32 result_per_page = 3;
+  enum Corpus {
+      UNIVERSAL = 0;
+      WEB = 1;
+  }
+  Corpus corpus = 4;
+}
+```
+
+And we initialize the message like this:
+
+```go
+Message{
+  Query:      "my query",
+  PageNumber: 42,
+  Corpus:     ComplexMessage_NEWS,
+}
+```
+
+The hex decoded proto message (`0a086d79207175657279102a2006`) will be decoded as:
+
+```text
+$ decode 0a086d79207175657279102a2004
+1:"my query" 2:42 4:6
 ```
