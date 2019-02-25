@@ -7,6 +7,7 @@ import (
 	proto "github.com/golang/protobuf/proto"
 )
 
+// PrintExample is used to print an examplary marshalled proto message.
 func PrintExample() {
 	pb := ComplexMessage{
 		Query:      "my query",
