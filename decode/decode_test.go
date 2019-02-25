@@ -84,7 +84,7 @@ func TestDecode(t *testing.T) {
 
 			// assert results
 			if enc != tt.expect.encryption {
-				t.Fatalf("expeced decoding %v, got %v", tt.expect.encryption, enc)
+				t.Fatalf("expected decoding %v, got %v", tt.expect.encryption, enc)
 			}
 			if !bytes.Equal(decoded, tt.expect.output) {
 				t.Fatalf("expected '%v', got '%v'", tt.expect.output, decoded)

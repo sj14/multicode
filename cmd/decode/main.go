@@ -26,7 +26,7 @@ func main() {
 	flag.BoolVar(&base64, "base64", true, "use base64 decoding")
 	flag.BoolVar(&proto, "proto", true, "use proto decoding")
 	flag.BoolVar(&none, "none", false, "disable all decodings")
-	flag.BoolVar(&verbose, "v", false, "verbose ouput mode")
+	flag.BoolVar(&verbose, "v", false, "verbose output mode")
 	flag.Parse()
 
 	var input []byte
