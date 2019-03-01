@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/sj14/multicode/decode"
@@ -63,9 +64,15 @@ const tmpl string = `<!DOCTYPE html>
 func main() {
 	http.HandleFunc("/", handleDecode)
 
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	log.Printf("listening on port %v\n", port)
+
 	// TODO: use custom server with timeout
-	// TODO: address/port as flag
-	log.Fatalln(http.ListenAndServe(":8080", nil))
+	log.Fatalln(http.ListenAndServe(":"+port, nil))
 }
 
 func handleDecode(w http.ResponseWriter, r *http.Request) {
