@@ -10,6 +10,55 @@ import (
 	"github.com/sj14/multicode/decode"
 )
 
+const tmpl string = `<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Decode hex, base64 and protobuf recursively</title>
+</head>
+
+<body>
+    <form action="/">
+        <textarea rows="10" cols="100" name="input" placeholder="Your encoded input." required>{{.Input}}</textarea>
+        <br>
+        <input type="submit">
+    </form>
+
+
+    <br>
+    <textarea rows="10" cols="100" placeholder="The decoded result will be shown here." disabled>{{.Decoded}}</textarea>
+
+    <br>
+    {{if .Encryptions}}
+    Applied Decodings:
+    <ol>
+        {{range .Encryptions}}
+        <li> {{.}} </li>
+        {{end}}
+    </ol>
+
+    {{end}}
+
+    <br>
+    Examples:
+    <ul>
+        <li> <a
+                href="/?input=54686520717569636b2062726f776e20f09fa68a206a756d7073206f766572203133206c617a7920f09f90b62e">Hex</a>
+        </li>
+        <li> <a href="/?input=VGhlIHF1aWNrIGJyb3duIPCfpooganVtcHMgb3ZlciAxMyBsYXp5IPCfkLYu">Base64</a></li>
+        <li> <a
+                href="/?input=NTQ2ODY1MjA3MTc1Njk2MzZiMjA2MjcyNmY3NzZlMjBmMDlmYTY4YTIwNmE3NTZkNzA3MzIwNmY3NjY1NzIyMDMxMzMyMDZjNjE3YTc5MjBmMDlmOTBiNjJl">Base64
+                and Hex</a></li>
+        <li> <a href="/?input=0a086d79207175657279102a2006">Proto</a>
+        </li>
+    </ul>
+
+    <a href="https://github.com/sj14/multicode">Source-Code</a>
+</body>
+
+</html>`
+
 // TODO: buttons to enable/disable specific decodings
 func main() {
 	http.HandleFunc("/", handleDecode)
@@ -21,8 +70,10 @@ func main() {
 
 func handleDecode(w http.ResponseWriter, r *http.Request) {
 	// TODO: cache the template
-	t := template.Must(template.ParseFiles("./cmd/decode-web/index.html"))
-
+	t, err := template.New("index").Parse(tmpl)
+	if err != nil {
+		log.Printf("failed to parse template: %v", err)
+	}
 	input := r.FormValue("input")
 	input = strings.TrimSpace(input)
 
