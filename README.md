@@ -1,5 +1,6 @@
 # multicode
 
+[![Build Status](https://travis-ci.org/sj14/multicode.svg?branch=master)](https://travis-ci.org/sj14/multicode)
 [![Go Report Card](https://goreportcard.com/badge/github.com/sj14/multicode)](https://goreportcard.com/report/github.com/sj14/multicode)
 [![GoDoc](https://godoc.org/github.com/sj14/multicode/decode?status.png)](https://godoc.org/github.com/sj14/multicode/decode)
 
