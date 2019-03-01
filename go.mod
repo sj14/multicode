@@ -1,4 +1,4 @@
-// +heroku install ./cmd/decode-web/... ./decode-web
+// +heroku install ./cmd/decode-web/...
 
 module github.com/sj14/multicode
 
