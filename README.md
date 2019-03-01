@@ -8,11 +8,20 @@
 
 ## Installation
 
+### CLI
+
 ``` text
 go get -u github.com/sj14/multicode/cmd/decode
 ```
 
-## Usage
+### Web Interface
+
+[Demo](https://multicode.herokuapp.com/)
+``` text
+go get -u github.com/sj14/multicode/cmd/decode-web
+```
+
+## CLI Usage
 
 ``` text
   -base64
@@ -26,7 +35,7 @@ go get -u github.com/sj14/multicode/cmd/decode
   -v    verbose ouput mode
 ```
 
-## Examples
+## CLI Examples
 
 First, let's encode a string with hex and base64 encoding:
 
