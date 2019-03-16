@@ -9,7 +9,7 @@ import (
 
 func TestDecode(t *testing.T) {
 	type expect struct {
-		encryption Encryption
+		encryption Encoding
 		output     []byte
 	}
 
