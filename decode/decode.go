@@ -135,9 +135,9 @@ func (d *Decoder) Decode(input []byte) ([]byte, Encoding) {
 
 	// hex after byte
 	if d.hex {
-		hexIn := strings.TrimSpace(string(input))  // e.g. new line
-		hexIn = strings.TrimPrefix(hexIn, "0x")    // hex prefix
-		hexIn = strings.ReplaceAll(hexIn, " ", "") // bd b2 3d bc 20 e2 8c 98 -> bdb23dbc20e28c98
+		hexIn := strings.TrimSpace(string(input))   // e.g. new line
+		hexIn = strings.TrimPrefix(hexIn, "0x")     // hex prefix
+		hexIn = strings.Replace(hexIn, " ", "", -1) // bd b2 3d bc 20 e2 8c 98 -> bdb23dbc20e28c98
 
 		if b, err := hex.DecodeString(hexIn); err == nil {
 			return b, Hex
