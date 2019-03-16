@@ -125,7 +125,11 @@ func (d *Decoder) Decode(input []byte) ([]byte, Encoding) {
 	}
 
 	if d.hex {
-		if b, err := hex.DecodeString(strings.TrimSpace(strings.TrimPrefix(string(input), "0x"))); err == nil {
+		hexIn := strings.TrimSpace(string(input))  // e.g. new line
+		hexIn = strings.TrimPrefix(hexIn, "0x")    // hex prefix
+		hexIn = strings.ReplaceAll(hexIn, " ", "") // bd b2 3d bc 20 e2 8c 98 -> bdb23dbc20e28c98
+
+		if b, err := hex.DecodeString(hexIn); err == nil {
 			return b, Hex
 		}
 	}
