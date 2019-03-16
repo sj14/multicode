@@ -124,6 +124,16 @@ func (d *Decoder) Decode(input []byte) ([]byte, Encoding) {
 		}
 	}
 
+	// byte before hex, hex might contains letters, which are not valid in byte dec
+	if d.byteDec {
+		byteIn := strings.Trim(string(input), "[]") // [32 87 111 114 108 100] -> 32 87 111 114 108 100
+
+		if b, err := AsBytes(byteIn); err == nil {
+			return b, Byte
+		}
+	}
+
+	// hex after byte
 	if d.hex {
 		hexIn := strings.TrimSpace(string(input))  // e.g. new line
 		hexIn = strings.TrimPrefix(hexIn, "0x")    // hex prefix
@@ -131,12 +141,6 @@ func (d *Decoder) Decode(input []byte) ([]byte, Encoding) {
 
 		if b, err := hex.DecodeString(hexIn); err == nil {
 			return b, Hex
-		}
-	}
-
-	if d.byteDec {
-		if b, err := AsBytes(string(input)); err == nil {
-			return b, Byte
 		}
 	}
 
