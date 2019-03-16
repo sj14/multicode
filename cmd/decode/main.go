@@ -14,6 +14,7 @@ import (
 
 var (
 	verbose bool
+	byteDec bool
 	hex     bool
 	base64  bool
 	proto   bool
@@ -22,10 +23,11 @@ var (
 
 func main() {
 	// init flags
+	flag.BoolVar(&byteDec, "byte", true, "use byte decoding")
 	flag.BoolVar(&hex, "hex", true, "use hex decoding")
 	flag.BoolVar(&base64, "base64", true, "use base64 decoding")
 	flag.BoolVar(&proto, "proto", true, "use proto decoding")
-	flag.BoolVar(&none, "none", false, "disable all decodings")
+	// flag.BoolVar(&none, "none", false, "disable all decodings") // TODO: not working yet
 	flag.BoolVar(&verbose, "v", false, "verbose output mode")
 	flag.Parse()
 
@@ -57,6 +59,9 @@ func main() {
 	opts = append(opts, decode.WithoutAll())
 
 	// Enable specifified decodings.
+	if byteDec {
+		opts = append(opts, decode.WithByte())
+	}
 	if hex {
 		opts = append(opts, decode.WithHex())
 	}
@@ -71,7 +76,7 @@ func main() {
 	var (
 		decoder = decode.New(opts...)
 		result  = input
-		enc     decode.Encryption
+		enc     decode.Encoding
 	)
 	for result, enc = decoder.Decode(result); enc != decode.None; result, enc = decoder.Decode(result) {
 		logVerbose("- applied decoding '%v':\n%s\n\n", enc, result)

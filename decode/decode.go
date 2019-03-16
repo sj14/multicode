@@ -3,37 +3,42 @@ package decode
 import (
 	"encoding/base64"
 	"encoding/hex"
+	"strconv"
 	"strings"
 
 	"github.com/golang/protobuf/proto"
 	"github.com/sj14/multicode/decode/protodec"
 )
 
-// Encryption handled by the decoding.
-type Encryption string
+// Encoding handled by the decoding.
+type Encoding string
 
 const (
-	// None decryption.
+	// None decoding.
 	None = "none"
-	// Proto decryption.
+	// Proto decoding.
 	Proto = "proto"
-	// Hex decryption.
+	// Hex decoding.
 	Hex = "hex"
-	// Base64 decryption.
+	// Byte decoding.
+	Byte = "byte"
+	// Base64 decoding.
 	Base64 = "base64"
 )
 
 // Decoder implementation.
 type Decoder struct {
-	proto  bool
-	hex    bool
-	base64 bool
+	proto   bool
+	byteDec bool
+	hex     bool
+	base64  bool
 }
 
 var defaultDecoder = Decoder{
-	proto:  true,
-	hex:    true,
-	base64: true,
+	proto:   true,
+	byteDec: true,
+	hex:     true,
+	base64:  true,
 }
 
 // Option for decoding.
@@ -43,8 +48,16 @@ type Option func(*Decoder)
 func WithoutAll() Option {
 	return func(d *Decoder) {
 		d.proto = false
+		d.byteDec = false
 		d.hex = false
 		d.base64 = false
+	}
+}
+
+// WithHex decoding.
+func WithByte() Option {
+	return func(d *Decoder) {
+		d.byteDec = true
 	}
 }
 
@@ -87,7 +100,7 @@ func DecodeAll(input []byte, opts ...Option) []byte {
 	var (
 		decoder = New(opts...)
 		result  = input
-		enc     Encryption
+		enc     Encoding
 	)
 
 	for result, enc = decoder.Decode(result); enc != None; result, enc = decoder.Decode(result) {
@@ -97,7 +110,7 @@ func DecodeAll(input []byte, opts ...Option) []byte {
 }
 
 // Decode the given input as proto message, hex or base64 (applied in this order).
-func (d *Decoder) Decode(input []byte) ([]byte, Encryption) {
+func (d *Decoder) Decode(input []byte) ([]byte, Encoding) {
 	if len(input) == 0 {
 		return []byte{}, None
 	}
@@ -117,9 +130,14 @@ func (d *Decoder) Decode(input []byte) ([]byte, Encryption) {
 		}
 	}
 
+	if d.byteDec {
+		if b, err := AsBytes(string(input)); err == nil {
+			return b, Byte
+		}
+	}
+
 	// TODO: many false-positives. Decodes it when no base64 was given.
-	// Keep it as one of the last decodings. Maybe even 'continue' on the
-	// applied decoding before, so e.g. nested hex encodings won't reach here this early.
+	// Keep it as one of the last decodings.
 	if d.base64 {
 		if b, err := base64.StdEncoding.DecodeString(strings.TrimSpace(string(input))); err == nil {
 			return b, Base64
@@ -127,4 +145,19 @@ func (d *Decoder) Decode(input []byte) ([]byte, Encryption) {
 	}
 
 	return input, None
+}
+
+func AsBytes(input string) ([]byte, error) {
+	input = strings.TrimSpace(input)
+	splitted := strings.Split(input, " ")
+	var result []byte
+
+	for _, i := range splitted {
+		byteAsInt, err := strconv.Atoi(i)
+		if err != nil {
+			return nil, err
+		}
+		result = append(result, byte(byteAsInt))
+	}
+	return result, nil
 }

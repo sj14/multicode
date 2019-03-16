@@ -87,8 +87,8 @@ func handleDecode(w http.ResponseWriter, r *http.Request) {
 	var (
 		decoder    = decode.New()
 		result     = []byte(input)
-		enc        decode.Encryption
-		appliedEnc []decode.Encryption
+		enc        decode.Encoding
+		appliedEnc []decode.Encoding
 	)
 	for result, enc = decoder.Decode(result); enc != decode.None; result, enc = decoder.Decode(result) {
 		appliedEnc = append(appliedEnc, enc)
@@ -101,7 +101,7 @@ func handleDecode(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		Input       string
 		Decoded     string
-		Encryptions []decode.Encryption
+		Encryptions []decode.Encoding
 	}{
 		Input:       input,
 		Decoded:     string(result),

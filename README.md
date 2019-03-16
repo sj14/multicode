@@ -4,7 +4,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/sj14/multicode)](https://goreportcard.com/report/github.com/sj14/multicode)
 [![GoDoc](https://godoc.org/github.com/sj14/multicode/decode?status.png)](https://godoc.org/github.com/sj14/multicode/decode)
 
-`multicode` allows to input a (nested) `base64`, `hex` or `proto` (protocol buffers) decoded sequence and will recursively try to encode it. This is helpful when you get encoded data but don't exactly know how it was encoded or encoding might lead to cumbersome command concatenation.
+`multicode` allows to input a (nested) `byte`, `hex`, `base64` or `proto` (protocol buffers) decoded sequence and will recursively try to encode it. This is helpful when you get encoded data but don't exactly know how it was encoded or encoding might lead to cumbersome command concatenation.
 
 ## Installation
 
@@ -27,16 +27,25 @@ go get -u github.com/sj14/multicode/cmd/decode-web
 ``` text
   -base64
         use base64 decoding (default true)
+  -byte
+        use byte decoding (default true)
   -hex
         use hex decoding (default true)
-  -none
-        disable all decodings
   -proto
         use proto decoding (default true)
-  -v    verbose ouput mode
+  -v    verbose output mode
 ```
 
 ## CLI Examples
+
+### Decode byte input
+
+```text
+$ decode "72 101 108 108 111 32 87 111 114 108 100"
+Hello World
+```
+
+### Decode nested decodings
 
 First, let's encode a string with hex and base64 encoding:
 
@@ -83,6 +92,8 @@ $ decode -v -hex=false Njg2NTZjNmM2ZjIwNzQ2ODY1NzI2NTBhCg==
 - result:
 68656C6C6F207468657265
 ```
+
+
 
 ## Protobuf
 
