@@ -45,6 +45,9 @@ const tmpl string = `<!DOCTYPE html>
     Examples:
     <ul>
         <li> <a
+                href="/?input=84+104+101+32+113+117+105+99+107+32+98+114+111+119+110+32+240+159+166+138+32+106+117+109+112+115+32+111+118+101+114+32+49+51+32+108+97+122+121+32+240+159+144+182+46">Bytes</a>
+        </li>
+        <li> <a
                 href="/?input=54686520717569636b2062726f776e20f09fa68a206a756d7073206f766572203133206c617a7920f09f90b62e">Hex</a>
         </li>
         <li> <a href="/?input=VGhlIHF1aWNrIGJyb3duIPCfpooganVtcHMgb3ZlciAxMyBsYXp5IPCfkLYu">Base64</a></li>
