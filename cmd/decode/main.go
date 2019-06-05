@@ -12,22 +12,18 @@ import (
 	"github.com/sj14/multicode/decode"
 )
 
-var (
-	verbose bool
-	byteDec bool
-	hex     bool
-	base64  bool
-	proto   bool
-	none    bool
-)
+var verbose bool
 
 func main() {
 	// init flags
-	flag.BoolVar(&byteDec, "byte", true, "use byte decoding")
-	flag.BoolVar(&hex, "hex", true, "use hex decoding")
-	flag.BoolVar(&base64, "base64", true, "use base64 decoding")
-	flag.BoolVar(&proto, "proto", true, "use proto decoding")
-	// flag.BoolVar(&none, "none", false, "disable all decodings") // TODO: not working yet
+	var (
+		byteDec = flag.Bool("byte", true, "use byte decoding")
+		hex     = flag.Bool("hex", true, "use hex decoding")
+		base64  = flag.Bool("base64", true, "use base64 decoding")
+		proto   = flag.Bool("proto", true, "use proto decoding")
+		// none := flag.Bool("none", false, "disable all decodings") // TODO: not working yet
+	)
+
 	flag.BoolVar(&verbose, "v", false, "verbose output mode")
 	flag.Parse()
 
@@ -59,16 +55,16 @@ func main() {
 	opts = append(opts, decode.WithoutAll())
 
 	// Enable specifified decodings.
-	if byteDec {
+	if *byteDec {
 		opts = append(opts, decode.WithByte())
 	}
-	if hex {
+	if *hex {
 		opts = append(opts, decode.WithHex())
 	}
-	if base64 {
+	if *base64 {
 		opts = append(opts, decode.WithBase64())
 	}
-	if proto {
+	if *proto {
 		opts = append(opts, decode.WithProto())
 	}
 
