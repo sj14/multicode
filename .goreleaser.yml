@@ -8,8 +8,10 @@ before:
 builds:
 - 
   main: ./cmd/decode/main.go
+  binary: decode
   env:
   - CGO_ENABLED=0
+  - GO111MODULE=on
   goos:
   - linux
   - darwin
@@ -74,7 +76,7 @@ release:
     name: multicode
   disable: false
   draft: false
-  prerelease: true
+  prerelease: false
 
 changelog:
   filters:
