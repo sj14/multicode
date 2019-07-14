@@ -10,6 +10,22 @@
 
 ### CLI
 
+#### Precompiled Binaries
+
+Binaries are available for all major platforms. See the [releases](https://github.com/sj14/multicode/releases) page.
+
+#### Homebrew
+
+Using the [Homebrew](https://brew.sh/) package manager for macOS:
+
+``` text
+brew install sj14/tap/multicode
+```
+
+#### Manually
+
+It's also possible to install the current development snapshot with `go get`:
+
 ``` text
 go get -u github.com/sj14/multicode/cmd/decode
 ```
