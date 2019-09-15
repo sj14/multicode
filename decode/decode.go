@@ -16,19 +16,22 @@ type Encoding string
 const (
 	// None decoding.
 	None = "none"
-	// Proto decoding.
-	Proto = "proto"
-	// Hex decoding.
-	Hex = "hex"
+	// Bit decoding.
+	Bit = "bit"
 	// Byte decoding.
 	Byte = "byte"
+	// Hex decoding.
+	Hex = "hex"
 	// Base64 decoding.
 	Base64 = "base64"
+	// Proto decoding.
+	Proto = "proto"
 )
 
 // Decoder implementation.
 type Decoder struct {
 	proto   bool
+	bitDec  bool
 	byteDec bool
 	hex     bool
 	base64  bool
@@ -36,6 +39,7 @@ type Decoder struct {
 
 var defaultDecoder = Decoder{
 	proto:   true,
+	bitDec:  true,
 	byteDec: true,
 	hex:     true,
 	base64:  true,
@@ -124,11 +128,19 @@ func (d *Decoder) Decode(input []byte) ([]byte, Encoding) {
 		}
 	}
 
+	if d.bitDec {
+		byteIn := strings.Trim(string(input), "[]") // [32 87 111 114 108 100] -> 32 87 111 114 108 100
+
+		if b, err := Base2AsBytes(byteIn); err == nil {
+			return b, Bit
+		}
+	}
+
 	// byte before hex, hex might contains letters, which are not valid in byte dec
 	if d.byteDec {
 		byteIn := strings.Trim(string(input), "[]") // [32 87 111 114 108 100] -> 32 87 111 114 108 100
 
-		if b, err := AsBytes(byteIn); err == nil {
+		if b, err := Base10AsBytes(byteIn); err == nil {
 			return b, Byte
 		}
 	}
@@ -155,13 +167,28 @@ func (d *Decoder) Decode(input []byte) ([]byte, Encoding) {
 	return input, None
 }
 
-func AsBytes(input string) ([]byte, error) {
+func Base10AsBytes(input string) ([]byte, error) {
 	input = strings.TrimSpace(input)
 	splitted := strings.Split(input, " ")
 	var result []byte
 
 	for _, i := range splitted {
 		byteAsInt, err := strconv.Atoi(i)
+		if err != nil {
+			return nil, err
+		}
+		result = append(result, byte(byteAsInt))
+	}
+	return result, nil
+}
+
+func Base2AsBytes(input string) ([]byte, error) {
+	input = strings.TrimSpace(input)
+	splitted := strings.Split(input, " ")
+	var result []byte
+
+	for _, i := range splitted {
+		byteAsInt, err := strconv.ParseInt(i, 2, 0)
 		if err != nil {
 			return nil, err
 		}

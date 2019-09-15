@@ -28,6 +28,22 @@ func TestDecode(t *testing.T) {
 			},
 		},
 		{
+			description: "bit",
+			given:       []byte("01010100 01101000 01100101 00100000 01110001 01110101 01101001 01100011 01101011 00100000 01100010 01110010 01101111 01110111 01101110 00100000 11110000 10011111 10100110 10001010 00100000 01101010 01110101 01101101 01110000 01110011 00100000 01101111 01110110 01100101 01110010 00100000 00110001 00110011 00100000 01101100 01100001 01111010 01111001 00100000 11110000 10011111 10010000 10110110 00101110"),
+			expect: expect{
+				encryption: Bit,
+				output:     []byte("The quick brown 🦊 jumps over 13 lazy 🐶."),
+			},
+		},
+		{
+			description: "bytes",
+			given:       []byte("84 104 101 32 113 117 105 99 107 32 98 114 111 119 110 32 240 159 166 138 32 106 117 109 112 115 32 111 118 101 114 32 49 51 32 108 97 122 121 32 240 159 144 182 46"),
+			expect: expect{
+				encryption: Byte,
+				output:     []byte("The quick brown 🦊 jumps over 13 lazy 🐶."),
+			},
+		},
+		{
 			description: "base64",
 			given:       []byte(base64.StdEncoding.EncodeToString([]byte("This is a base64 test"))),
 			expect: expect{
