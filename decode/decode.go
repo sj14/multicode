@@ -58,7 +58,14 @@ func WithoutAll() Option {
 	}
 }
 
-// WithHex decoding.
+// WithBit decoding.
+func WithBit() Option {
+	return func(d *Decoder) {
+		d.bitDec = true
+	}
+}
+
+// WithByte decoding.
 func WithByte() Option {
 	return func(d *Decoder) {
 		d.byteDec = true
