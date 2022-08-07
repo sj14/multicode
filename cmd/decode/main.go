@@ -19,21 +19,20 @@ var (
 )
 
 func main() {
-	// init flags
 	var (
-		bitDec    = flag.Bool("bit", true, "use bit decoding")
-		byteDec   = flag.Bool("byte", true, "use byte decoding")
-		hexDec    = flag.Bool("hex", true, "use hex decoding")
-		base64Dec = flag.Bool("base64", true, "use base64 decoding")
-		protoDec  = flag.Bool("proto", true, "use proto decoding")
-		verbose   = flag.Bool("verbose", false, "verbose output mode")
-		version   = flag.Bool("version", false, fmt.Sprintf("print version information of this release (%v)", version))
+		bitDec      = flag.Bool("bit", true, "use bit decoding")
+		byteDec     = flag.Bool("byte", true, "use byte decoding")
+		hexDec      = flag.Bool("hex", true, "use hex decoding")
+		base64Dec   = flag.Bool("base64", true, "use base64 decoding")
+		protoDec    = flag.Bool("proto", true, "use proto decoding")
+		verbose     = flag.Bool("verbose", false, "verbose output mode")
+		versionFlag = flag.Bool("version", false, fmt.Sprintf("print version information of this release (%v)", version))
 		// none := flag.Bool("none", false, "disable all decodings") // TODO: not working yet
 	)
 	flag.Parse()
 
 	// print version info and exit
-	if *version {
+	if *versionFlag {
 		fmt.Printf("version: %v\n", version)
 		fmt.Printf("commit: %v\n", commit)
 		fmt.Printf("date: %v\n", date)
