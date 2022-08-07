@@ -4,7 +4,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/sj14/multicode)](https://goreportcard.com/report/github.com/sj14/multicode)
 [![GoDoc](https://godoc.org/github.com/sj14/multicode/decode?status.png)](https://godoc.org/github.com/sj14/multicode/decode)
 
-`multicode` allows to input a (nested) `byte`, `hex`, `base64` or `proto` (protocol buffers) decoded sequence and will recursively try to encode it. This is helpful when you get encoded data but don't exactly know how it was encoded or encoding might lead to cumbersome command concatenation.
+`multicode` allows to input a (nested) `bits`, `bytes`, `hex`, `base64` or `proto` (protocol buffers) encoded sequence and will recursively try to decode it. This is helpful when you get encoded data but don't exactly know how it was encoded or decoding might lead to cumbersome command concatenation.
 
 ## Installation
 
@@ -43,13 +43,18 @@ go get -u github.com/sj14/multicode/cmd/decode-web
 ``` text
   -base64
         use base64 decoding (default true)
+  -bit
+        use bit decoding (default true)
   -byte
         use byte decoding (default true)
   -hex
         use hex decoding (default true)
   -proto
         use proto decoding (default true)
-  -v    verbose output mode
+  -verbose
+        verbose output mode
+  -version
+        print version information
 ```
 
 ## CLI Examples
