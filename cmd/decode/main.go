@@ -12,20 +12,33 @@ import (
 	"github.com/sj14/multicode/decode"
 )
 
-var verbose bool
+var (
+	version = "dev version"
+	commit  = "none"
+	date    = "unknown"
+)
 
 func main() {
 	// init flags
 	var (
-		byteDec = flag.Bool("byte", true, "use byte decoding")
-		hex     = flag.Bool("hex", true, "use hex decoding")
-		base64  = flag.Bool("base64", true, "use base64 decoding")
-		proto   = flag.Bool("proto", true, "use proto decoding")
+		bitDec    = flag.Bool("bit", true, "use bit decoding")
+		byteDec   = flag.Bool("byte", true, "use byte decoding")
+		hexDec    = flag.Bool("hex", true, "use hex decoding")
+		base64Dec = flag.Bool("base64", true, "use base64 decoding")
+		protoDec  = flag.Bool("proto", true, "use proto decoding")
+		verbose   = flag.Bool("verbose", false, "verbose output mode")
+		version   = flag.Bool("version", false, fmt.Sprintf("print version information of this release (%v)", version))
 		// none := flag.Bool("none", false, "disable all decodings") // TODO: not working yet
 	)
-
-	flag.BoolVar(&verbose, "v", false, "verbose output mode")
 	flag.Parse()
+
+	// print version info and exit
+	if *version {
+		fmt.Printf("version: %v\n", version)
+		fmt.Printf("commit: %v\n", commit)
+		fmt.Printf("date: %v\n", date)
+		os.Exit(0)
+	}
 
 	var input []byte
 
@@ -55,16 +68,19 @@ func main() {
 	opts = append(opts, decode.WithoutAll())
 
 	// Enable specifified decodings.
+	if *bitDec {
+		opts = append(opts, decode.WithByte())
+	}
 	if *byteDec {
 		opts = append(opts, decode.WithByte())
 	}
-	if *hex {
+	if *hexDec {
 		opts = append(opts, decode.WithHex())
 	}
-	if *base64 {
+	if *base64Dec {
 		opts = append(opts, decode.WithBase64())
 	}
-	if *proto {
+	if *protoDec {
 		opts = append(opts, decode.WithProto())
 	}
 
@@ -75,7 +91,7 @@ func main() {
 		enc     decode.Encoding
 	)
 	for result, enc = decoder.Decode(result); enc != decode.None; result, enc = decoder.Decode(result) {
-		logVerbose("- applied decoding '%v':\n%s\n\n", enc, result)
+		logVerbose(*verbose, "- applied decoding '%v':\n%s\n\n", enc, result)
 	}
 
 	// check if any kind of decryption was applied
@@ -84,11 +100,11 @@ func main() {
 	}
 
 	// output result
-	logVerbose("- result:\n")
+	logVerbose(*verbose, "- result:\n")
 	fmt.Printf("%v\n", string(result))
 }
 
-func logVerbose(format string, v ...interface{}) {
+func logVerbose(verbose bool, format string, v ...interface{}) {
 	if !verbose {
 		return
 	}
