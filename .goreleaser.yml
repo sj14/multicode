@@ -31,7 +31,7 @@ snapshot:
 brews:
   - name: multicode
     skip_upload: auto
-    tap:
+    repository:
       owner: sj14
       name: homebrew-tap
     description: "Decode bits, hex, base64 and protobuf recursively with a single command"
