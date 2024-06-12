@@ -82,7 +82,7 @@ func TestDecode(t *testing.T) {
 			decodings:   2,
 			expect: expect{
 				encryption: Proto,
-				output:     []byte(`1:"asd" 2:42 4:4 5:"\n\x14https://exa mple.com\x12\bexa mple" 7:"" `),
+				output:     []byte(`type_url:"asd" 2:42 4:4 5:"\n\x14https://exa mple.com\x12\x08exa mple" 7:""`),
 			},
 		},
 	}
@@ -103,7 +103,7 @@ func TestDecode(t *testing.T) {
 				t.Fatalf("expected decoding %v, got %v", tt.expect.encryption, enc)
 			}
 			if !bytes.Equal(decoded, tt.expect.output) {
-				t.Fatalf("expected '%v', got '%v'", tt.expect.output, decoded)
+				t.Fatalf("expected '%v', got '%v'", string(tt.expect.output), string(decoded))
 			}
 		})
 	}
