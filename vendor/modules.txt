@@ -1,4 +1,0 @@
-# github.com/golang/protobuf v1.3.0
-## explicit
-github.com/golang/protobuf/proto
-github.com/golang/protobuf/ptypes/any

@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/golang/protobuf/proto"
-	"github.com/sj14/multicode/decode/protodec"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/anypb"
 )
 
 // Encoding handled by the decoding.
@@ -126,7 +126,7 @@ func (d *Decoder) Decode(input []byte) ([]byte, Encoding) {
 		return []byte{}, None
 	}
 
-	unmarshalled := &protodec.Empty{}
+	unmarshalled := &anypb.Any{}
 
 	if d.proto {
 		if err := proto.Unmarshal(input, unmarshalled); err == nil {

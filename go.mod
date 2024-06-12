@@ -1,7 +1,5 @@
-// +heroku install ./cmd/decode-web/...
-
 module github.com/sj14/multicode
 
-go 1.17
+go 1.22.3
 
-require github.com/golang/protobuf v1.3.0
+require google.golang.org/protobuf v1.34.2
