@@ -82,7 +82,7 @@ func TestDecode(t *testing.T) {
 			decodings:   2,
 			expect: expect{
 				encryption: Proto,
-				output:     []byte(`type_url:"asd" 2:42 4:4 5:"\n\x14https://exa mple.com\x12\x08exa mple" 7:""`),
+				output:     []byte(`type_url:"asd"  2:42  4:4  5:"\n\x14https://exa mple.com\x12\x08exa mple"  7:""`),
 			},
 		},
 	}
